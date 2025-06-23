@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/your-repo.git'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                bat 'msbuild MySolution.sln /p:Configuration=Release'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                bat '"%NUNIT_PATH%\\nunit-console.exe" MyProject.Tests\\bin\\Release\\MyProject.Tests.dll'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                bat 'xcopy /Y /E "bin\\Release\\*" "\\\\deploy-server\\shared\\"'
+            }
+        }
+    }
+    
+    post {
+        always {
+            bat 'echo "Pipeline completed - %DATE% %TIME%"'
+        }
+    }
+}
