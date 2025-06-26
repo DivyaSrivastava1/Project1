@@ -5,7 +5,7 @@ pipeline {
 
     environment {
         // Set any environment variables you need here
-        BUILD_DIR = 'C:\ProgramData\Jenkins'
+        BUILD_DIR = 'C:/ProgramData/Jenkins'
         IMAGE_NAME = "DevOps/myapp_test"
         IMAGE_TAG = "latest"
         GIT_URL = https://github.com/DivyaSrivastava1/Project1.git
