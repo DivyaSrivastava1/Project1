@@ -6,7 +6,10 @@ WORKDIR C:\app
 
 
 # Copy source code into the container
-COPY Devops.ps1 .
+COPY devops.sh .
+
+# Make it executable
+RUN chmod +x devops.sh
 
 # Optional: Install any required tools here
 # Example: RUN powershell -Command "Install-WindowsFeature -Name Web-Server"
@@ -21,4 +24,4 @@ RUN apt update && apt install -y openjdk-21-jdk
 # RUN package.bat
 
 # Default command - interactive shell
-CMD ["./Devops.ps1"]
+CMD ["./devops.sh"]
