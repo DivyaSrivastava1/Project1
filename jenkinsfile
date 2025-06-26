@@ -1,8 +1,6 @@
 pipeline {
-    agent {
-        label 'windows' // Make sure your agent/node has this label
-    }
-
+    agent any
+    
     environment {
         BUILD_DIR = 'C:/ProgramData/Jenkins'
         IMAGE_NAME = "DevOps/myapp_test"
