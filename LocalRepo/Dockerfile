@@ -2,16 +2,17 @@
 FROM mcr.microsoft.com/windows/servercore:ltsc2022
 
 # Set working directory
-WORKDIR C:\Divya\Project1.git\localRepo
+WORKDIR C:\app
+
 
 # Copy source code into the container
-COPY . .
+COPY Devops.ps1 .
 
 # Optional: Install any required tools here
 # Example: RUN powershell -Command "Install-WindowsFeature -Name Web-Server"
 
 # Run the build script
-RUN build.bat
+RUN "C:\\Program Files\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\MSBuild.exe" MyApp.sln /p:Configuration=Release
 
 # Optional: run tests
 # RUN run_tests.bat
@@ -20,4 +21,4 @@ RUN build.bat
 # RUN package.bat
 
 # Default command - interactive shell
-CMD ["cmd.exe"]
+CMD ["./Devops.ps1"]
