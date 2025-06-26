@@ -2,7 +2,7 @@
 FROM ubuntu:24.04
 
 # Set working directory
-WORKDIR C:\app
+WORKDIR /app
 
 
 # Copy source code into the container
