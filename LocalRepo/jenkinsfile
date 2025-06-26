@@ -1,35 +1,76 @@
 pipeline {
-    agent any
-    
+    agent {
+        label 'windows' // Make sure your agent/node has this label
+    }
+
+    environment {
+        // Set any environment variables you need here
+        BUILD_DIR = 'C:\ProgramData\Jenkins'
+        IMAGE_NAME = "DevOps/myapp_test"
+        IMAGE_TAG = "latest"
+        GIT_URL = https://github.com/DivyaSrivastava1/Project1/tree/branch2/LocalRepo
+        DATE = "${new Date().format('yyyyMMdd')}"
+        JAVA_HOME = 'C:\Program Files\Java\jdk-21'
+    }
+
+    options {
+        timestamps() // Adds timestamps to the console output
+    }
+      
+      stages {
+        stage('Clone Repo') {
+            steps {
+                git 'https://github.com/DivyaSrivastava1/Project1/tree/branch2/LocalRepo.git'
+            }
+        }
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-repo.git'
+                echo 'Checking out source code...'
+                git branch: 'branch2', url: 'https://github.com/DivyaSrivastava1/Project1/tree/branch2/LocalRepo'
             }
         }
-        
-        stage('Build') {
+
+         stage('Build Docker Image') {
             steps {
-                bat 'msbuild MySolution.sln /p:Configuration=Release'
+                script {
+                    bat 'docker build -t DevOps/myapp_test:latest .'
+                }
             }
         }
-        
+
         stage('Test') {
             steps {
-                bat '"%NUNIT_PATH%\\nunit-console.exe" MyProject.Tests\\bin\\Release\\MyProject.Tests.dll'
+                echo 'Running tests...'
+                bat 'run_tests.bat' // Or specify your test framework
             }
         }
-        
-        stage('Deploy') {
+
+        stage('Package') {
             steps {
-                bat 'xcopy /Y /E "bin\\Release\\*" "\\\\deploy-server\\shared\\"'
+                echo 'Packaging artifacts...'
+                bat 'package.bat' // Or use a tool like NuGet/7-Zip
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                echo 'Archiving build artifacts...'
+                archiveArtifacts artifacts: '**/build/**/*.zip', onlyIfSuccessful: true
             }
         }
     }
-    
+
     post {
+        success {
+            echo 'Build completed successfully.'
+        }
+        failure {
+            echo 'Build failed.'
+        }
         always {
-            bat 'echo "Pipeline completed - %DATE% %TIME%"'
+            echo 'Cleaning up...'
+            cleanWs()
         }
     }
 }

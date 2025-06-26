@@ -1,0 +1,10 @@
+---
+- name: Stop and disable Windows service
+  hosts: windows
+  tasks:
+    - name: Stop print spooler service
+      win_service:
+        name: Print Spooler
+        state: stopped
+
+   
