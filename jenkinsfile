@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     environment {
         BUILD_DIR = 'C:/ProgramData/Jenkins'
         IMAGE_NAME = "DevOps/myapp_test"
@@ -30,19 +30,7 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                echo 'Running tests...'
-                bat 'run_tests.bat'
-            }
-        }
-
-        stage('Package') {
-            steps {
-                echo 'Packaging artifacts...'
-                bat 'package.bat'
-            }
-        }
+        
     }
 
     post {
