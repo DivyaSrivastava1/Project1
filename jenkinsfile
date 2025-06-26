@@ -4,29 +4,27 @@ pipeline {
     }
 
     environment {
-        // Set any environment variables you need here
         BUILD_DIR = 'C:/ProgramData/Jenkins'
         IMAGE_NAME = "DevOps/myapp_test"
         IMAGE_TAG = "latest"
         GIT_URL = 'https://github.com/DivyaSrivastava1/Project1.git'
         DATE = "${new Date().format('yyyyMMdd')}"
         JAVA_HOME = 'C:/Program Files/Java/jdk-21'
-
     }
 
     options {
-        timestamps() // Adds timestamps to the console output
+        timestamps()
     }
-      
+
     stages {
         stage('Checkout') {
             steps {
                 echo 'Checking out source code...'
-                git branch: 'branch2', url: 'https://github.com/DivyaSrivastava1/Project1.git'
+                git branch: 'branch2', url: "${env.GIT_URL}"
             }
         }
-    }
-         stage('Build Docker Image') {
+
+        stage('Build Docker Image') {
             steps {
                 script {
                     bat 'docker build -t DevOps/myapp_test:latest .'
@@ -37,19 +35,17 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                bat 'run_tests.bat' // Or specify your test framework
+                bat 'run_tests.bat'
             }
         }
 
         stage('Package') {
             steps {
                 echo 'Packaging artifacts...'
-                bat 'package.bat' // Or use a tool like NuGet/7-Zip
+                bat 'package.bat'
             }
         }
-
-        }
-    
+    }
 
     post {
         success {
@@ -63,4 +59,4 @@ pipeline {
             cleanWs()
         }
     }
-
+}
