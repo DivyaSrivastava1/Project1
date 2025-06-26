@@ -1,5 +1,5 @@
 # Use a Windows base image
-FROM ubuntu:24.04.01
+FROM ubuntu:24.04
 
 # Set working directory
 WORKDIR C:\app
