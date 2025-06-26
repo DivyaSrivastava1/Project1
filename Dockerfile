@@ -1,5 +1,5 @@
 # Use a Windows base image
-FROM mcr.microsoft.com/windows/servercore:ltsc2022
+FROM ubuntu:24.04.01
 
 # Set working directory
 WORKDIR C:\app
@@ -12,7 +12,7 @@ COPY Devops.ps1 .
 # Example: RUN powershell -Command "Install-WindowsFeature -Name Web-Server"
 
 # Run the build script
-RUN "C:\\Program Files\\Microsoft Visual Studio\\2022\\BuildTools\\MSBuild\\Current\\Bin\\MSBuild.exe" MyApp.sln /p:Configuration=Release
+RUN apt update && apt install -y openjdk-21-jdk
 
 # Optional: run tests
 # RUN run_tests.bat
